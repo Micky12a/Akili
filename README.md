@@ -166,7 +166,7 @@ git push origin main
 
 ## Équipe
 
-Projet développé par **Heritage Tech** dans le cadre du Hackathon EIG 2025.
+Projet développé par **L'équipe 1** dans le cadre du 2ème Hackathon EIG 2026.
 
 | Membre | Rôle |
 |---|---|
