@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <title>Akili Script Toolkit — Automatisation de Puissance</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --teal: #2dd4bf;
+      --teal-dark: #0f9488;
+      --orange: #f97316;
+      --yellow: #fde047;
+      --bg: #0a0c10;
+      --bg2: #0d1018;
+      --surface: #131720;
+      --surface2: #1a1f2e;
+      --text: #e6eaf4;
+      --muted: #636b7e;
+      --border: #1e2438;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,12,16,0.82); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-brand { font-family:'Playfair Display', Georgia, serif; font-size:20px; font-weight:800; color:var(--text); text-decoration:none; }
+    .nav-brand span { color:var(--teal); }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .nav-links a:hover,.nav-links a.active { color:var(--text); }
+    .nav-right { display:flex; gap:10px; align-items:center; }
+    .btn-ghost { padding:7px 16px; font-size:13px; font-weight:600; color:var(--text); text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; transition:border-color .2s,color .2s; }
+    .btn-ghost:hover { border-color:var(--teal); color:var(--teal); }
+    .btn-nav-teal { padding:7px 16px; font-size:13px; font-weight:700; color:#0a0c10; background:var(--teal); text-decoration:none; border-radius:6px; transition:background .2s; white-space:nowrap; }
+    .btn-nav-teal:hover { background:var(--teal-dark); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px; height: 36px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 8px;
+      transition: border-color .2s;
+    }
+    .hamburger:hover { border-color: var(--teal); }
+    .hamburger span {
+      display: block; height: 1.5px; width: 100%;
+      background: var(--text); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 60px; left: 0; right: 0; z-index: 299;
+      background: rgba(31, 38, 53, 0.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 24px 28px;
+      flex-direction: column; gap: 4px;
+      transform: translateY(-10px); opacity: 0;
+      transition: transform .25s ease, opacity .25s ease;
+      pointer-events: none;
+    }
+    .mobile-menu.open {
+      display: flex;
+      transform: translateY(0); opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-menu a {
+      font-size: 15px; font-weight: 500; color: var(--muted);
+      text-decoration: none; padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color .2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover, .mobile-menu a.active { color: var(--text); }
+    .mobile-menu .mob-login {
+      margin-top: 12px; padding: 12px 0; font-weight: 600;
+      color: var(--teal); border-bottom: none;
+    }
+
+    .hero {
+      position:relative; min-height:100vh;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:80px 40px 80px; overflow:hidden;
+    }
+    #hero-canvas { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .hero-grid {
+      position:absolute; inset:0;
+      background-image: linear-gradient(rgba(255,255,255,0.022) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.022) 1px,transparent 1px);
+      background-size:60px 60px;
+      mask-image:radial-gradient(ellipse 90% 80% at 50% 50%, black 30%, transparent 100%);
+      pointer-events:none;
+    }
+    .hero-glow {
+      position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:900px; height:460px;
+      background:radial-gradient(ellipse at top, rgba(45,212,191,0.12) 0%, transparent 65%);
+      pointer-events:none;
+    }
+    .particles { position:absolute; inset:0; pointer-events:none; }
+    .particle {
+      position:absolute; border-radius:50%;
+      animation:floatP linear infinite; opacity:0;
+    }
+    @keyframes floatP {
+      0%   { opacity:0; transform:translateY(0) scale(.5); }
+      10%  { opacity:.9; }
+      90%  { opacity:.4; }
+      100% { opacity:0; transform:translateY(-480px) scale(1.3); }
+    }
+
+    .hero-content { position:relative; z-index:10; max-width:840px; }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(45,212,191,0.07); border:1px solid rgba(45,212,191,0.25);
+      color:var(--teal); font-family:'Times New Roman', Times; font-size:10.5px;
+      letter-spacing:.15em; text-transform:uppercase;
+      padding:6px 16px; border-radius:20px; margin-bottom:32px;
+      animation:fsd .8s ease both;
+    }
+    .bdot { width:6px; height:6px; background:var(--teal); border-radius:50%; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.65)} }
+
+    .hero h1 {
+      font-family:'Playfair Display', Georgia, serif;
+      font-size:clamp(44px,7.5vw,82px); font-weight:800;
+      line-height:1.04; letter-spacing:-0.03em; color:var(--text);
+      margin-bottom:24px; animation:fsd .9s ease .1s both;
+      display:block;
+    }
+    .hero h1 .line1 {
+      display:block;
+    }
+    .hero h1 .line2 {
+      display:block;
+      white-space:nowrap;
+    }
+    .hero h1 .wt { color:var(--teal); }
+    .hero h1 .wo { color:var(--orange); }
+
+    .hero-sub {
+      font-size:17px; color:var(--muted); line-height:1.72;
+      max-width:560px; margin:0 auto 44px; animation:fsd 1s ease .2s both;
+    }
+    .hero-actions {
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+      margin-bottom:56px; animation:fsd 1s ease .3s both;
+    }
+    .btn-pl {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:15px 32px; background:var(--teal); color:#0a0c10;
+      font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700;
+      border:none; border-radius:8px; text-decoration:none; cursor:pointer;
+      transition:background .2s,box-shadow .2s;
+    }
+    .btn-pl:hover { background:var(--teal-dark); box-shadow:0 0 28px rgba(45,212,191,.3); }
+    .btn-ol {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:15px 32px; background:transparent; color:var(--text);
+      font-size:15px; font-weight:600;
+      border:1.5px solid rgba(255,255,255,.13); border-radius:8px; text-decoration:none;
+      transition:border-color .2s,color .2s;
+    }
+    .btn-ol:hover { border-color:var(--teal); color:var(--teal); }
+
+    .hero-code {
+      position:relative; z-index:10;
+      background:rgba(19,23,32,.92); border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; overflow:hidden; max-width:680px; margin:0 auto;
+      backdrop-filter:blur(12px);
+      box-shadow:0 32px 80px rgba(0,0,0,.75),0 0 0 1px rgba(45,212,191,.07);
+      animation:fsu 1s ease .5s both;
+    }
+    .code-topbar {
+      display:flex; align-items:center; gap:8px; padding:13px 20px;
+      background:rgba(255,255,255,.03); border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .dot { width:11px; height:11px; border-radius:50%; }
+    .dr{background:#ff5f57;} .dy{background:#ffbd2e;} .dg{background:#28c840;}
+    .ctab { margin-left:12px; font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); background:rgba(255,255,255,.05); padding:3px 12px; border-radius:4px; }
+    .code-lines { display:grid; grid-template-columns:auto 1fr; padding:20px 0; font-family:'Space Mono',monospace; font-size:13px; line-height:2; }
+    .lns { padding:0 16px 0 20px; color:#252c3e; user-select:none; text-align:right; }
+    .lc  { padding-right:24px; }
+    .ck{color:#7dd3fc;} .cs{color:#f6ad55;} .cf{color:var(--teal);} .cn{color:#fc8181;} .cc{color:#2e3650;} .cp{color:var(--muted);}
+
+    .hero-stats {
+      position:relative; z-index:10;
+      display:flex; justify-content:center; gap:56px;
+      margin-top:52px; padding-top:40px;
+      border-top:1px solid var(--border);
+      animation:fsu 1s ease .7s both;
+    }
+    .hstat { text-align:center; }
+    .hstat-v { font-family:'Playfair Display', Georgia, serif; font-size:28px; font-weight:800; color:var(--text); display:block; }
+    .hstat-l { font-family:'DM Sans', system-ui, sans-serif; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:block; }
+
+    @keyframes fsd { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fsu { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+
+    .slabel { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); margin-bottom:14px; display:block; }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    .complexity {
+      padding:120px 40px; background:var(--bg2); position:relative;
+    }
+    .complexity::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:600px; height:1px;
+      background:linear-gradient(90deg,transparent,var(--teal),transparent);
+    }
+    .cx-header { text-align:center; margin-bottom:72px; }
+    .cx-header h2 { font-family:'Playfair Display', Georgia, serif; font-size:clamp(28px,4vw,46px); font-weight:800; color:var(--text); letter-spacing:-.02em; margin-bottom:14px; }
+    .cx-header p { font-size:15.5px; color:var(--muted); font-style:italic; }
+
+    .cx-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:50px;
+      max-width:1000px; margin:0 auto;
+    }
+
+    .cx-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:14px;
+      padding:36px 32px 40px; position:relative; overflow:hidden;
+      transition:border-color .3s,transform .3s;
+    }
+    .cx-card::after {
+      content:''; position:absolute; bottom:0; left:0; right:0;
+      height:3px; background:var(--orange); border-radius:0 0 14px 14px;
+      transition:height .3s;
+    }
+    .cx-card:hover { border-color:rgba(249,115,22,.4); transform:translateY(-5px); }
+    .cx-card:hover::after { height:5px; }
+    .cx-icon { width:48px; height:48px; background:rgba(45,212,191,.08); color:var(--teal); border:1px solid rgba(45,212,191,.2); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:24px; }
+    .cx-title { font-family:'Playfair Display', Georgia, serif; font-size:21px; font-weight:700; color:var(--text); line-height:1.2; margin-bottom:14px; }
+    .cx-desc { font-size:14px; color:var(--muted); line-height:1.7; }
+
+    .how { padding:120px 40px; background:var(--bg); text-align:center; position:relative; }
+    .how::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:300px; height:1px;
+      background:linear-gradient(90deg,transparent,var(--teal),transparent);
+    }
+    .how::after {
+      content:'■ ■ ■'; position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+      font-size:7px; letter-spacing:6px; color:var(--teal);
+    }
+    .how-hdr { margin-bottom:80px; }
+    .how-hdr h2 { font-family:'Playfair Display', Georgia, serif; font-size:clamp(26px,3.5vw,42px); font-weight:800; color:var(--text); letter-spacing:-.02em; margin-bottom:12px; }
+    .how-hdr p { font-size:15px; color:var(--muted); font-style:italic; }
+
+    .how-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:900px; margin:0 auto; position:relative; }
+    .how-steps::before {
+      content:''; position:absolute; top:32px; left:calc(16.66% + 20px); right:calc(16.66% + 20px);
+      height:1px; background:linear-gradient(90deg,var(--teal),rgba(45,212,191,.15),var(--teal));
+    }
+    .step { position:relative; z-index:1; }
+    .sbadge { width:64px; height:64px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:18px; font-weight:700; margin:0 auto 28px; }
+    .s1{background:var(--teal);color:#0a0c10;}
+    .s2{background:var(--orange);color:#0a0c10;}
+    .s3{background:var(--yellow);color:#0a0c10;}
+    .step-t { font-family:'Playfair Display', Georgia, serif; font-size:18px; font-weight:700; color:var(--text); margin-bottom:12px; }
+    .step-d { font-size:14px; color:var(--muted); line-height:1.7; max-width:220px; margin:0 auto; }
+
+    .modules { padding:120px 40px; background:var(--bg2); }
+    .mod-hdr { margin-bottom:56px; justify-content: center; }
+    .mod-hdr h2 { font-family:'Playfair Display', Georgia, serif; font-size:clamp(24px,3vw,40px); font-weight:800; color:var(--text); letter-spacing:-.02em; }
+
+    .bento {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:40px;
+      max-width:100%;
+    }
+    .bc {
+      background:var(--surface); border:1px solid var(--border); border-radius:16px;
+      padding:32px 28px; transition:transform .25s,border-color .25s;
+    }
+    .bc:hover { transform:translateY(-4px); border-color:rgba(45,212,191,.3); }
+    .bc.byellow { background:var(--yellow); border-color:var(--yellow); }
+    .bc.byellow .bi,.bc.byellow .bt,.bc.byellow .bd { color:#1a1a0a; }
+    .bc.bteal   { background:var(--teal);   border-color:var(--teal); }
+    .bc.bteal .bi,.bc.bteal .bt,.bc.bteal .bd { color:#051210; }
+    .bc.bteal:hover,.bc.byellow:hover { transform:translateY(-4px); }
+    .bi { font-size:22px; color:var(--teal); margin-bottom:16px; display:block; }
+    .bt { font-family:'Playfair Display', Georgia, serif; font-size:18px; font-weight:700; color:var(--text); margin-bottom:10px; }
+    .bd { font-size:13.5px; color:var(--muted); line-height:1.65; }
+
+    .cta-final { padding:80px 40px 100px; background:var(--bg); }
+    .cta-box {
+      max-width:900px; margin:0 auto;
+      background:var(--teal); border-radius:24px; padding:72px 60px;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .cta-box::before {
+      content:''; position:absolute; top:-80px; right:-80px;
+      width:260px; height:260px; background:rgba(255,255,255,.08); border-radius:50%;
+    }
+    .cta-box::after {
+      content:''; position:absolute; bottom:-60px; left:-60px;
+      width:200px; height:200px; background:rgba(255,255,255,.06); border-radius:50%;
+    }
+    .cta-box h2 { font-family:'Playfair Display', Georgia, serif; font-size:clamp(26px,4vw,46px); font-weight:800; color:#051210; letter-spacing:-.025em; margin-bottom:18px; position:relative;z-index:1; }
+    .cta-box p  { font-size:15px; color:rgba(5,18,16,.7); line-height:1.7; max-width:520px; margin:0 auto 36px; position:relative;z-index:1; }
+    .cta-btns   { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative;z-index:1; margin-bottom:20px; }
+    .btn-orange { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; background:var(--orange); color:#fff; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; border:none; border-radius:8px; text-decoration:none; cursor:pointer; transition:background .2s; }
+    .btn-orange:hover { background:#ea650d; }
+    .btn-od { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; background:transparent; color:#051210; font-size:15px; font-weight:600; border:2px solid rgba(5,18,16,.3); border-radius:8px; text-decoration:none; transition:border-color .2s,background .2s; }
+    .btn-od:hover { border-color:rgba(5,18,16,.7); background:rgba(5,18,16,.07); }
+    .cta-fine { font-size:13px; color:rgba(5,18,16,.5); position:relative;z-index:1; }
+
+    footer { background:var(--bg); border-top:1px solid var(--border); padding:36px 40px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+    .fb { font-family:'Playfair Display', Georgia, serif; font-size:16px; font-weight:800; color:var(--text); }
+    .fb span { color:var(--teal); }
+    .fl { display:flex; gap:28px; list-style:none; }
+    .fl a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .fl a:hover { color:var(--teal); }
+    .fc { font-size:12px; color:var(--muted); }
+
+    @media(max-width:860px) {
+      nav { padding:0 16px; }
+      .nav-links { display:none; }
+      .btn-ghost { display:none; } 
+      .hamburger { display:flex; }
+
+      .hero {
+        padding: 70px 20px 40px;
+        min-height: 100dvh;
+        justify-content: flex-start;
+        padding-top: 80px;
+      }
+      .hero-content { width: 100%; }
+
+      .hero h1 { font-size: clamp(30px, 9vw, 48px); }
+      .hero h1 .line2 { white-space: normal; }
+
+      .hero-sub { font-size: 15px; margin-bottom: 32px; }
+
+      .hero-actions { margin-bottom: 32px; }
+      .btn-pl, .btn-ol { padding: 12px 22px; font-size: 14px; }
+
+      .hero-code { font-size: 11px; }
+      .code-lines { font-size: 11px; }
+
+      .hero-stats {
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-top: 32px;
+        padding-top: 28px;
+      }
+      .hstat-v { font-size: 22px; }
+
+      .complexity, .how, .modules, .cta-final { padding: 70px 20px; }
+
+      .cx-grid { grid-template-columns: 1fr; gap: 16px; }
+      .how-steps { grid-template-columns: 1fr; }
+      .how-steps::before { display:none; }
+
+      .bento { grid-template-columns: 1fr; gap: 14px; }
+
+      .cta-box { padding: 48px 24px; }
+      footer { flex-direction:column; text-align:center; }
+      .fl { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    }
+
+    @media(max-width:520px) {
+      .hero h1 { font-size: clamp(26px, 10vw, 38px); }
+      .hero-stats { gap: 16px; }
+      .hstat { min-width: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Accueil</a></li>
+    <li><a href="fonctionnalites.html">Fonctionnalités</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="services.html">Services</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="connexion.html" class="btn-ghost">Se connecter</a>
+    <a href="inscription.html" class="btn-nav-teal">Commencer</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="index.html" class="active">Accueil</a>
+  <a href="fonctionnalites.html">Fonctionnalités</a>
+  <a href="tarification.html">Tarification</a>
+  <a href="services.html">Services</a>
+  <a href="connexion.html" class="mob-login">Se connecter →</a>
+</nav>
+
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge"><span class="bdot"></span>Akili Script Toolkit · v2.4 · Nouveau</div>
+
+    <h1>
+      <span class="line1">Automatisez avec une</span>
+      <span class="line2"><span class="wt">Puissance</span> <span class="wo">Accessible</span></span>
+    </h1>
+
+    <p class="hero-sub">Une boîte à outils d'automatisation SaaS moderne inspirée par la précision de l'art géométrique. Conçue pour les développeurs qui apprécient la performance et la résonance culturelle authentique.</p>
+
+    <div class="hero-actions">
+      <a href="inscription.html" class="btn-pl">Commencer à construire →</a>
+      <a href="fonctionnalites.html" class="btn-ol">Voir la documentation</a>
+    </div>
+
+    <div class="hero-code">
+      <div class="code-topbar">
+        <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+        <span class="ctab">akili.config.js</span>
+      </div>
+      <div class="code-lines">
+        <div class="lns">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</div>
+        <div class="lc">
+          <span class="cc">Akili Script Toolkit — Configuration</span><br>
+          <span class="ck">const</span> <span class="cf">akili</span> <span class="cp">=</span> <span class="cf">require</span><span class="cp">(</span><span class="cs">'akili-toolkit'</span><span class="cp">);</span><br><br>
+          <span class="cf">akili</span><span class="cp">.</span><span class="cf">deploy</span><span class="cp">({</span><br>
+          &nbsp;&nbsp;<span class="ck">pattern</span><span class="cp">:</span> <span class="cs">'geometric'</span><span class="cp">,</span><br>
+          &nbsp;&nbsp;<span class="ck">power</span><span class="cp">:</span> <span class="cs">'maximum'</span><span class="cp">,</span><br>
+          &nbsp;&nbsp;<span class="ck">latency</span><span class="cp">:</span> <span class="cn">12</span><span class="cp">,</span><br>
+          &nbsp;&nbsp;<span class="ck">uptime</span><span class="cp">:</span> <span class="cn">99.9</span><br>
+          <span class="cp">});</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-v">12ms</span><span class="hstat-l">Latence P99</span></div>
+      <div class="hstat"><span class="hstat-v">99.9%</span><span class="hstat-l">Uptime Garanti</span></div>
+      <div class="hstat"><span class="hstat-v">50k+</span><span class="hstat-l">Développeurs</span></div>
+      <div class="hstat"><span class="hstat-v">40+</span><span class="hstat-l">Régions Edge</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="complexity">
+  <div class="cx-header reveal">
+    <h2>Complexité Résolue</h2>
+    <p>Nous transformons la friction manuelle en automatisation rythmique.</p>
+  </div>
+  <div class="cx-grid">
+    <div class="cx-card reveal">
+      <div class="cx-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+            <path d="M11.983 1.907a.75.75 0 0 0-1.292-.657l-8.5 9.5A.75.75 0 0 0 2.75 12h6.572l-1.305 6.093a.75.75 0 0 0 1.292.657l8.5-9.5A.75.75 0 0 0 17.25 8h-6.572l1.305-6.093Z" />
+        </svg>
+    </div>
+      <div class="cx-title">Flux de travail fragmentés</div>
+      <p class="cx-desc">Arrêtez de jongler avec des scripts disparates. Unifiez l'intégralité de votre pile logique en une interface rythmique et cohérente.</p>
+    </div>
+    <div class="cx-card reveal">
+      <div class="cx-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+            <path fill-rule="evenodd" d="M12.577 4.878a.75.75 0 0 1 .919-.53l4.78 1.281a.75.75 0 0 1 .531.919l-1.281 4.78a.75.75 0 0 1-1.449-.387l.81-3.022a19.407 19.407 0 0 0-5.594 5.203.75.75 0 0 1-1.139.093L7 10.06l-4.72 4.72a.75.75 0 0 1-1.06-1.061l5.25-5.25a.75.75 0 0 1 1.06 0l3.074 3.073a20.923 20.923 0 0 1 5.545-4.931l-3.042-.815a.75.75 0 0 1-.53-.919Z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="cx-title">Écarts de performance</div>
+      <p class="cx-desc">L'optimisation native garantit que vos automatisations s'exécutent à la vitesse de la pensée, pas à la vitesse du délai réseau.</p>
+    </div>
+    <div class="cx-card reveal">
+      <div class="cx-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+            <path fill-rule="evenodd" d="M9.661 2.237a.531.531 0 0 1 .678 0 11.947 11.947 0 0 0 7.078 2.749.5.5 0 0 1 .479.425c.069.52.104 1.05.104 1.59 0 5.162-3.26 9.563-7.834 11.256a.48.48 0 0 1-.332 0C5.26 16.564 2 12.163 2 7c0-.538.035-1.069.104-1.589a.5.5 0 0 1 .48-.425 11.947 11.947 0 0 0 7.077-2.75Zm4.196 5.954a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="cx-title">Actifs vulnérables</div>
+      <p class="cx-desc">Des couches de sécurité renforcées intégrées au cœur du système, protégeant chaque octet de données comme une géométrie sacrée.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="how-hdr reveal">
+    <h2>Comment ça fonctionne</h2>
+    <p>Trois étapes simples vers la maîtrise.</p>
+  </div>
+  <div class="how-steps">
+    <div class="step reveal">
+      <div class="sbadge s1">01</div>
+      <div class="step-t">Définir le modèle</div>
+      <p class="step-d">Identifiez vos besoins d'automatisation et cartographiez le flux logique visuel.</p>
+    </div>
+    <div class="step reveal">
+      <div class="sbadge s2">02</div>
+      <div class="step-t">Déployer le script</div>
+      <p class="step-d">Injectez la boîte à outils dans votre environnement avec une seule ligne de commande.</p>
+    </div>
+    <div class="step reveal">
+      <div class="sbadge s3">03</div>
+      <div class="step-t">Observer le flux</div>
+      <p class="step-d">Surveillez l'exécution en direct grâce à des tableaux de bord aux visualisations géométriques.</p>
+    </div>
+  </div>
+</section>
+
+<section class="modules">
+  <div class="mod-hdr reveal">
+    <h2>Chaque module, une puissance.</h2>
+  </div>
+  <div class="bento">
+    <div class="bc reveal">
+      <span class="bi">⊞</span>
+      <div class="bt">Logique modulaire</div>
+      <p class="bd">Construisez des systèmes complexes avec des blocs de scripts interchangeables et pré-validés qui s'assemblent comme des motifs tissés.</p>
+    </div>
+    <div class="bc reveal">
+      <span class="bi">⊟</span>
+      <div class="bt">Aperçus en temps réel</div>
+      <p class="bd">Données de télémétrie en direct diffusées directement vers votre terminal ou tableau de bord personnalisé.</p>
+    </div>
+    <div class="bc byellow reveal">
+      <span class="bi">⊛</span>
+      <div class="bt">Guidage par IA</div>
+      <p class="bd">Suggestions intelligentes intégrées pour optimiser les performances de vos scripts en continu et automatiquement.</p>
+    </div>
+    <div class="bc reveal">
+      <span class="bi">↺</span>
+      <div class="bt">Auto-synchronisation</div>
+      <p class="bd">Maintenez vos scripts en parfaite harmonie sur toutes les instances cloud automatiquement, sans intervention manuelle.</p>
+    </div>
+    <div class="bc reveal">
+      <span class="bi">⊕</span>
+      <div class="bt">APIs personnalisées</div>
+      <p class="bd">Exposez n'importe quelle automatisation comme un endpoint API sécurisé et documenté en quelques secondes.</p>
+    </div>
+    <div class="bc bteal reveal">
+      <span class="bi">✦</span>
+      <div class="bt">Échelle mondiale</div>
+      <p class="bd">Distribuez votre logique sur 40+ emplacements edge mondiaux pour une exécution sans latence partout dans le monde.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="cta-box reveal">
+    <h2>Prêt à amplifier votre flux de travail ?</h2>
+    <p>Une boîte à outils d'automatisation SaaS moderne inspirée par la précision de l'art géométrique. Conçue pour les développeurs qui apprécient la performance et la résonance culturelle.</p>
+    <div class="cta-btns">
+      <a href="inscription.html" class="btn-orange">Créer un compte gratuit</a>
+      <a href="tarification.html" class="btn-od">Planifier une démo</a>
+    </div>
+    <p class="cta-fine">Aucune carte de crédit requise. Annulez à tout moment.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="fb">Akili<span>.</span></div>
+  <ul class="fl">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="confidentialite.html">Confidentialité</a></li>
+    <li><a href="cdu.html">CGU</a></li>
+  </ul>
+  <div class="fc">© 2026 Akili. Tous droits réservés.</div>
+</footer>
+
+<script>
+const canvas = document.getElementById('hero-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const orbs = [
+  { x:.18, y:.28, r:.48, rgb:[45,212,191],  spd:.00042 },
+  { x:.82, y:.18, r:.40, rgb:[249,115,22],  spd:.00058 },
+  { x:.50, y:.78, r:.44, rgb:[45,212,191],  spd:.00031 },
+  { x:.08, y:.68, r:.32, rgb:[253,224,71],  spd:.00050 },
+  { x:.90, y:.65, r:.28, rgb:[249,115,22],  spd:.00066 },
+];
+
+function aurora(t) {
+  ctx.clearRect(0,0,W,H);
+  orbs.forEach((o,i) => {
+    const ox = (o.x + Math.sin(t * o.spd * 1000 + i * 1.3) * .14) * W;
+    const oy = (o.y + Math.cos(t * o.spd *  800 + i * 0.9) * .11) * H;
+    const r  = o.r * Math.min(W, H);
+    const g  = ctx.createRadialGradient(ox,oy,0, ox,oy,r);
+    g.addColorStop(0,   `rgba(${o.rgb},.10)`);
+    g.addColorStop(.5,  `rgba(${o.rgb},.04)`);
+    g.addColorStop(1,   `rgba(${o.rgb},0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+  });
+  requestAnimationFrame(aurora);
+}
+requestAnimationFrame(aurora);
+
+const pc = document.getElementById('particles');
+for (let i=0; i<32; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const sz    = Math.random()*4+2;
+  const isTeal= Math.random()>.45;
+  Object.assign(p.style, {
+    width:  sz+'px', height: sz+'px',
+    left:   Math.random()*100+'%',
+    top:    (35+Math.random()*55)+'%',
+    background: isTeal ? '#2dd4bf' : (Math.random()>.5 ? '#f97316' : '#fde047'),
+    animationDuration: (7+Math.random()*10)+'s',
+    animationDelay:    (Math.random()*10)+'s',
+    borderRadius: Math.random()>.6 ? '2px' : '50%',
+  });
+  pc.appendChild(p);
+}
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e,i) => {
+    if (e.isIntersecting) {
+      setTimeout(()=>e.target.classList.add('visible'), i*90);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold:.08 });
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const hamburger   = document.getElementById('hamburger');
+const mobileMenu  = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.contains('open');
+  if (isOpen) {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+  } else {
+    mobileMenu.classList.add('open');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+  }
+});
+
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  });
+});
+</script>
+</body>
+</html>

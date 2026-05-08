@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <title>Connexion - Akili</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --teal: #2dd4bf;
+      --teal-dark: #0f9488;
+      --orange: #f97316;
+      --yellow: #fde047;
+      --bg: #0a0c10;
+      --bg2: #0d1018;
+      --surface: #131720;
+      --surface2: #181b22;
+      --text: #e6eaf4;
+      --muted: #636b7e;
+      --border: #1e2438;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,12,16,0.82); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-brand { font-family:'Playfair Display', Georgia, serif; font-size:20px; font-weight:800; color:var(--text); text-decoration:none; }
+    .nav-brand span { color:var(--teal); }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .nav-links a:hover { color:var(--text); }
+    .nav-right { display:flex; gap:10px; align-items:center; }
+    .btn-ghost { padding:7px 16px; font-size:13px; font-weight:600; color:var(--text); text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; transition:border-color .2s,color .2s; }
+    .btn-ghost:hover { border-color:var(--teal); color:var(--teal); }
+    .btn-nav-teal { padding:7px 16px; font-size:13px; font-weight:700; color:#0a0c10; background:var(--teal); text-decoration:none; border-radius:6px; transition:background .2s; white-space:nowrap; }
+    .btn-nav-teal:hover { background:var(--teal-dark); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px;
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; cursor: pointer; padding: 8px; transition: border-color .2s;
+    }
+    .hamburger:hover { border-color: var(--teal); }
+    .hamburger span { display: block; height: 1.5px; width: 100%; background: var(--text); border-radius: 2px; transition: transform .3s, opacity .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; right: 0; z-index: 299;
+      background: rgba(10,12,16,0.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 24px 28px; flex-direction: column; gap: 4px;
+      transform: translateY(-10px); opacity: 0;
+      transition: transform .25s ease, opacity .25s ease; pointer-events: none;
+    }
+    .mobile-menu.open { display: flex; transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .mobile-menu a { font-size: 15px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s; }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--text); }
+    .mobile-menu .mob-signup { margin-top: 12px; padding: 12px 0; font-weight: 600; color: var(--teal); border-bottom: none; }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      padding-top: 60px;
+    }
+
+    /* LEFT PANEL */
+    .left-panel {
+      flex: 1;
+      padding: 60px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      top: 10%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(45,212,191,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(45,212,191,0.08);
+      color: var(--teal);
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(45,212,191,0.25);
+      margin-bottom: 28px;
+      width: fit-content;
+      position: relative; z-index: 1;
+    }
+
+    .left-panel h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      position: relative; z-index: 1;
+    }
+
+    .left-panel p.desc {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.68;
+      max-width: 380px;
+      margin-bottom: 48px;
+      position: relative; z-index: 1;
+    }
+
+    .stats {
+      display: flex;
+      gap: 48px;
+      position: relative; z-index: 1;
+    }
+
+    .stat-item {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 4px; bottom: 4px;
+      width: 3px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* RIGHT PANEL */
+    .right-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface2);
+      width: 380px;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+      padding: 40px 36px 32px;
+      border: 1px solid var(--border);
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    label {
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .forgot {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .forgot:hover { text-decoration: underline; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder { color: var(--muted); opacity: 0.5; }
+    input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.12);
+    }
+
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px;
+      background: var(--teal); color: #0a0c10;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 0.04em; cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { background: var(--teal-dark); box-shadow: 0 0 24px rgba(45,212,191,0.25); }
+    .btn-primary:active { transform: scale(0.99); }
+
+    .divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 24px 0;
+      font-size: 11px; font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .social-btn {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--text); cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 10px; text-decoration: none;
+    }
+    .social-btn:last-of-type { margin-bottom: 0; }
+    .social-btn:hover {
+      border-color: var(--teal);
+      box-shadow: 0 2px 12px rgba(45,212,191,0.10);
+    }
+
+    .google-logo { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; letter-spacing: 0; }
+    .g-blue   { color: #4285F4; }
+    .g-red    { color: #EA4335; }
+    .g-yellow { color: #FBBC05; }
+    .g-green  { color: #34A853; }
+    .gh-icon  { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .signup-link {
+      text-align: center; font-size: 13.5px; color: var(--muted); margin-top: 24px;
+    }
+    .signup-link a { color: var(--teal); font-weight: 600; text-decoration: none; }
+    .signup-link a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 36px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .fb { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 800; color: var(--text); }
+    .fb span { color: var(--teal); }
+    .fl { display: flex; gap: 28px; list-style: none; }
+    .fl a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .fl a:hover { color: var(--teal); }
+    .fc { font-size: 12px; color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .btn-ghost { display: none; }
+      .hamburger { display: flex; }
+
+      main { flex-direction: column; }
+      .left-panel { padding: 40px 24px 32px; }
+      .right-panel { padding: 24px 20px 48px; border-left: none; border-top: 1px solid var(--border); }
+      .card { width: 100%; max-width: 420px; }
+      footer { flex-direction: column; text-align: center; }
+      .fl { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="fonctionnalites.html">Fonctionnalités</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="services.html">Services</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="connexion.html" class="btn-ghost">Se connecter</a>
+    <a href="inscription.html" class="btn-nav-teal">Commencer</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="index.html">Accueil</a>
+  <a href="fonctionnalites.html">Fonctionnalités</a>
+  <a href="tarification.html">Tarification</a>
+  <a href="services.html">Services</a>
+  <a href="inscription.html" class="mob-signup">Créer un compte →</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <!-- LEFT PANEL — same as inscription -->
+  <div class="left-panel">
+    <div class="badge">Toolkit d'excellence</div>
+    <h2>Bon retour parmi l'élite.</h2>
+    <p class="desc">Accédez à vos automatisations, vos scripts et vos tableaux de bord conçus pour la précision et la performance à l'échelle mondiale.</p>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">50k+</div>
+        <div class="stat-label">Développeurs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">12ms</div>
+        <div class="stat-label">Latence P99</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">40+</div>
+        <div class="stat-label">Régions Edge</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — form -->
+  <div class="right-panel">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="card-title">Connexion</h1>
+        <p class="card-sub">Accédez à votre espace Akili Script Toolkit</p>
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Adresse e-mail</label>
+        </div>
+        <input type="email" id="email" placeholder="nom@exemple.com">
+      </div>
+
+      <div class="field">
+        <div class="label-row">
+          <label>Mot de passe</label>
+          <a href="forgot-password.html" class="forgot">Mot de passe oublié ?</a>
+        </div>
+        <input type="password" id="password" placeholder="••••••••">
+      </div>
+
+      <button class="btn-primary" onclick="handleLogin()">SE CONNECTER →</button>
+
+      <div class="divider">ou continuer avec</div>
+
+      <button class="social-btn" onclick="loginGoogle()">
+        <span class="google-logo">
+          <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+        </span>
+        Continuer avec Google
+      </button>
+
+      <button class="social-btn" onclick="loginGithub()">
+        <svg class="gh-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 .297C5.373.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.838 1.237 1.838 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.467-1.334-5.467-5.933 0-1.31.469-2.382 1.236-3.222-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.047.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.874.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.628-5.48 5.922.43.372.823 1.102.823 2.222v3.293c0 .322.218.694.825.576C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/>
+        </svg>
+        Continuer avec GitHub
+      </button>
+
+      <div class="signup-link">
+        Pas encore de compte ? <a href="inscription.html">S'inscrire</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fb">Akili<span>.</span></div>
+  <ul class="fl">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="confidentialite.html">Confidentialité</a></li>
+    <li><a href="cdu.html">CGU</a></li>
+  </ul>
+  <div class="fc">© 2026 Akili. Tous droits réservés.</div>
+</footer>
+
+<script>
+  /* Hamburger */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open', !open);
+    hamburger.classList.toggle('open', !open);
+    hamburger.setAttribute('aria-expanded', String(!open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }));
+
+  /* Auth */
+  function handleLogin() {
+    const email = document.getElementById('email').value.trim();
+    const pw = document.getElementById('password').value;
+    if (!email || !pw) { alert('Veuillez remplir tous les champs.'); return; }
+    alert('Connexion réussie !');
+  }
+  function loginGoogle() { alert('Connexion via Google…'); }
+  function loginGithub() { alert('Connexion via GitHub…'); }
+</script>
+</body>
+</html>

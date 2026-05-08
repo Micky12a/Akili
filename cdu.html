@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Conditions d'Utilisation - Akili</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --teal: #2dd4bf;
+      --teal-dark: #0f9488;
+      --bg: #0f1117;
+      --surface: #181b22;
+      --surface2: #1e2028;
+      --text: #e8eaf0;
+      --muted: #8b9099;
+      --border: #2a2d35;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-brand span { color: var(--teal); }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--teal); }
+
+    .hero {
+      padding: 64px 40px 48px;
+      max-width: 760px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(45,212,191,0.08);
+      border: 1px solid rgba(45,212,191,0.25);
+      color: var(--teal);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 72px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .toc a {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 0 5px 10px;
+      border-left: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--teal);
+      border-left-color: var(--teal);
+    }
+
+    .content section {
+      margin-bottom: 44px;
+    }
+
+    .content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .content h2.no-border { border-top: none; padding-top: 0; }
+
+    .content p {
+      font-size: 14.5px;
+      color: #b0b5bf;
+      margin-bottom: 14px;
+    }
+
+    .content ul {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+
+    .content ul li {
+      font-size: 14.5px;
+      color: #b0b5bf;
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+
+    .content ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .info-box {
+      background: rgba(45,212,191,0.06);
+      border: 1px solid rgba(45,212,191,0.2);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 13.5px;
+      color: var(--teal);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .info-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+    .warn-box {
+      background: rgba(248,113,113,0.06);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 13.5px;
+      color: #f87171;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .warn-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+    .plan-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 13.5px;
+    }
+
+    .plan-table th {
+      background: var(--surface2);
+      color: var(--text);
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .plan-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: #b0b5bf;
+    }
+
+    .plan-table td .teal { color: var(--teal); font-weight: 600; }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 8px;
+    }
+
+    .contact-card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .contact-card a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--teal); }
+
+    @media (max-width: 640px) {
+      nav, .hero, footer { padding-left: 20px; padding-right: 20px; }
+      .layout { grid-template-columns: 1fr; padding: 32px 20px 60px; }
+      .toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+    <a class="nav-back" href="inscription.html">← Retour</a>
+  </nav>
+
+  <div class="hero">
+    <div class="badge"><span class="badge-dot"></span>Document légal</div>
+    <h1>Conditions d'Utilisation</h1>
+    <div class="hero-meta">
+      <span>Dernière mise à jour : 03 Mai 2026</span>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="toc">
+      <div class="toc-title">Sommaire</div>
+      <a href="#acceptation">Acceptation</a>
+      <a href="#description">Description</a>
+      <a href="#compte">Votre compte</a>
+      <a href="#utilisation">Utilisation</a>
+      <a href="#interdits">Usages interdits</a>
+      <a href="#propriete">Propriété</a>
+      <a href="#abonnements">Abonnements</a>
+      <a href="#responsabilite">Responsabilité</a>
+      <a href="#resiliation">Résiliation</a>
+      <a href="#modifications">Modifications</a>
+      <a href="#contact">Contact</a>
+    </aside>
+
+    <div class="content">
+
+      <section id="acceptation">
+        <h2 class="no-border">Acceptation des conditions</h2>
+        <div class="info-box">
+          <strong>À lire avant de continuer</strong>
+          En créant un compte ou en utilisant Akili Script Toolkit, vous acceptez pleinement et sans réserve les présentes Conditions d'Utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
+        </div>
+        <p>Ces conditions constituent un accord légalement contraignant entre vous et Akili, société exploitant la plateforme Akili Script Toolkit.</p>
+      </section>
+
+      <section id="description">
+        <h2>Description du service</h2>
+        <p>Akili Script Toolkit est une plateforme SaaS d'automatisation destinée aux développeurs. Elle fournit :</p>
+        <ul>
+          <li>Des outils d'automatisation de workflows et de scripts.</li>
+          <li>Un environnement d'exécution cloud avec faible latence.</li>
+          <li>Des intégrations avec des services tiers (GitHub, Google, etc.).</li>
+          <li>Un tableau de bord de monitoring et d'analyse de performance.</li>
+          <li>Une API REST documentée et des SDK clients.</li>
+        </ul>
+        <p>Le service est fourni "tel quel" avec un engagement de disponibilité de 99,9% (SLA) pour les abonnements payants.</p>
+      </section>
+
+      <section id="compte">
+        <h2>Votre compte</h2>
+        <p>Pour accéder au service, vous devez créer un compte en fournissant des informations exactes et à jour. Vous êtes responsable de :</p>
+        <ul>
+          <li>La confidentialité de vos identifiants de connexion.</li>
+          <li>Toutes les activités effectuées depuis votre compte.</li>
+          <li>La notification immédiate à Akili de tout accès non autorisé.</li>
+          <li>L'utilisation d'un mot de passe fort et unique.</li>
+        </ul>
+        <p>Un seul compte par personne est autorisé. Les comptes partagés entre plusieurs personnes sont interdits sauf dans le cadre d'une licence équipe.</p>
+      </section>
+
+      <section id="utilisation">
+        <h2>Utilisation acceptable</h2>
+        <p>Vous vous engagez à utiliser Akili exclusivement à des fins légitimes et légales, notamment :</p>
+        <ul>
+          <li>Le développement et l'automatisation de vos propres projets.</li>
+          <li>L'intégration dans vos workflows professionnels.</li>
+          <li>L'utilisation conforme à la documentation officielle.</li>
+          <li>Le respect des limites de votre plan d'abonnement.</li>
+        </ul>
+      </section>
+
+      <section id="interdits">
+        <h2>Usages interdits</h2>
+        <div class="warn-box">
+          <strong>⚠ Tolérance zéro</strong>
+          Toute violation de cette section entraîne la suspension immédiate et définitive du compte, sans remboursement.
+        </div>
+        <p>Il vous est strictement interdit de :</p>
+        <ul>
+          <li>Utiliser le service à des fins illégales ou frauduleuses.</li>
+          <li>Tenter de contourner les mesures de sécurité de la plateforme.</li>
+          <li>Revendre, louer ou sous-licencier l'accès au service.</li>
+          <li>Effectuer du scraping massif, du spam ou des attaques DDoS.</li>
+          <li>Distribuer des malwares ou contenus nuisibles via le service.</li>
+          <li>Violer les droits de propriété intellectuelle de tiers.</li>
+          <li>Usurper l'identité d'Heritage Technology ou d'un autre utilisateur.</li>
+        </ul>
+      </section>
+
+      <section id="propriete">
+        <h2>Propriété intellectuelle</h2>
+        <p>Tous les éléments constitutifs d'Akili Script Toolkit: code source, interface, marques, logos, documentation sont la propriété exclusive d'Akili et protégés par les lois sur la propriété intellectuelle.</p>
+        <p>Vous conservez l'intégralité des droits sur vos propres données, scripts et projets hébergés sur la plateforme. En les hébergeant, vous nous accordez uniquement les droits nécessaires à la fourniture du service.</p>
+      </section>
+
+      <section id="abonnements">
+        <h2>Abonnements et paiements</h2>
+        <table class="plan-table">
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Accès</th>
+              <th>Facturation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="teal">Gratuit</span></td>
+              <td>Fonctionnalités de base, limites d'usage</td>
+              <td>Gratuit à vie</td>
+            </tr>
+            <tr>
+              <td><span class="teal">Pro</span></td>
+              <td>Fonctionnalités avancées, API étendue</td>
+              <td>Mensuelle ou annuelle</td>
+            </tr>
+            <tr>
+              <td><span class="teal">Enterprise</span></td>
+              <td>Accès illimité, SLA garanti, support dédié</td>
+              <td>Sur devis</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Les paiements sont traités via Mobile Money, Moov Money, Celtiis Cash, Wave, Paypal et Carte bancaire. Les abonnements se renouvellent automatiquement. Vous pouvez annuler à tout moment depuis votre tableau de bord ; l'accès reste actif jusqu'à la fin de la période payée.</p>
+        <p>Aucun remboursement n'est accordé pour les périodes partiellement utilisées, sauf obligation légale contraire.</p>
+      </section>
+
+      <section id="responsabilite">
+        <h2>Limitation de responsabilité</h2>
+        <p>Akili ne pourra être tenu responsable :</p>
+        <ul>
+          <li>Des pertes de données résultant d'une mauvaise utilisation du service.</li>
+          <li>Des interruptions de service liées à des cas de force majeure.</li>
+          <li>Des dommages indirects, consécutifs ou immatériels.</li>
+          <li>Des actions de tiers utilisant votre compte sans autorisation.</li>
+        </ul>
+        <p>Notre responsabilité totale est limitée au montant payé par vous au cours des 3 derniers mois précédant l'incident.</p>
+      </section>
+
+      <section id="resiliation">
+        <h2>Résiliation</h2>
+        <p>Vous pouvez résilier votre compte à tout moment depuis les paramètres. Akili se réserve le droit de suspendre ou supprimer un compte en cas de :</p>
+        <ul>
+          <li>Violation des présentes conditions.</li>
+          <li>Non-paiement après mise en demeure.</li>
+          <li>Activité frauduleuse ou illégale avérée.</li>
+        </ul>
+        <p>À la résiliation, vos données seront supprimées dans un délai de 30 jours, sauf obligation légale de conservation.</p>
+      </section>
+
+      <section id="modifications">
+        <h2>Modifications des conditions</h2>
+        <p>Akili se réserve le droit de modifier ces conditions à tout moment. En cas de modification substantielle, vous serez notifié par e-mail au moins 30 jours avant l'entrée en vigueur des nouvelles conditions.</p>
+        <p>La poursuite de l'utilisation du service après cette période vaut acceptation des nouvelles conditions.</p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact et droit applicable</h2>
+        <p>Ces conditions sont régies par le droit béninois et international applicable. Pour toute question :</p>
+        <div class="contact-card">
+          <p><strong style="color: var(--text); display:block; margin-bottom:8px;">Akili — Service Juridique</strong></p>
+          <p><a href="mailto:legal@akili.io">legal@akili.io</a></p>
+          <p style="margin-top:6px;">Siège social : Cotonou, Bénin</p>
+          <p style="margin-top:6px;">Tout litige sera soumis aux tribunaux compétents de Cotonou.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 Akili. Tous droits réservés.</span>
+    <a href="confidentialite.html">Politique de Confidentialité</a>
+    <a href="connexion.html">Se connecter</a>
+  </footer>
+
+</body>
+</html>

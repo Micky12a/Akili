@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Politique de Confidentialité - Akili</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --teal: #2dd4bf;
+      --teal-dark: #0f9488;
+      --bg: #0f1117;
+      --surface: #181b22;
+      --surface2: #1e2028;
+      --text: #e8eaf0;
+      --muted: #8b9099;
+      --border: #2a2d35;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-brand span { color: var(--teal); }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--teal); }
+
+    .hero {
+      padding: 64px 40px 48px;
+      max-width: 760px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(45,212,191,0.08);
+      border: 1px solid rgba(45,212,191,0.25);
+      color: var(--teal);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 72px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .toc a {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 0;
+      border-left: 2px solid transparent;
+      padding-left: 10px;
+      transition: all 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--teal);
+      border-left-color: var(--teal);
+    }
+
+    .content section {
+      margin-bottom: 44px;
+    }
+
+    .content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .content h2:first-child { border-top: none; padding-top: 0; }
+
+    .content p {
+      font-size: 14.5px;
+      color: #b0b5bf;
+      margin-bottom: 14px;
+    }
+
+    .content ul {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+
+    .content ul li {
+      font-size: 14.5px;
+      color: #b0b5bf;
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+
+    .content ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+
+    .info-box {
+      background: rgba(45,212,191,0.06);
+      border: 1px solid rgba(45,212,191,0.2);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 13.5px;
+      color: var(--teal);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .info-box strong { display: block; margin-bottom: 4px; font-weight: 700; }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 8px;
+    }
+
+    .contact-card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .contact-card a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--teal); }
+
+    @media (max-width: 640px) {
+      nav, .hero, footer { padding-left: 20px; padding-right: 20px; }
+      .layout { grid-template-columns: 1fr; padding: 32px 20px 60px; }
+      .toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+    <a class="nav-back" href="inscription.html">← Retour</a>
+  </nav>
+
+  <div class="hero">
+    <div class="badge"><span class="badge-dot"></span>Document légal</div>
+    <h1>Politique de Confidentialité</h1>
+    <div class="hero-meta">
+      <span>Dernière mise à jour : 03 Mai 2026</span>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="toc">
+      <div class="toc-title">Sommaire</div>
+      <a href="#intro">Introduction</a>
+      <a href="#collecte">Données collectées</a>
+      <a href="#utilisation">Utilisation</a>
+      <a href="#partage">Partage</a>
+      <a href="#securite">Sécurité</a>
+      <a href="#droits">Vos droits</a>
+      <a href="#cookies">Cookies</a>
+      <a href="#contact">Contact</a>
+    </aside>
+
+    <div class="content">
+
+      <section id="intro">
+        <h2>Introduction</h2>
+        <div class="info-box">
+          <strong>Résumé</strong>
+          Akili s'engage à protéger vos données personnelles. Cette politique explique quelles informations nous collectons, comment nous les utilisons et vos droits à leur égard.
+        </div>
+        <p>En utilisant nos services, vous acceptez les pratiques décrites dans ce document. Nous traitons vos données conformément au Règlement Général sur la Protection des Données (RGPD) et aux lois locales applicables.</p>
+      </section>
+
+      <section id="collecte">
+        <h2>Données collectées</h2>
+        <p>Nous collectons les catégories de données suivantes :</p>
+        <ul>
+          <li><strong>Données d'identification :</strong> nom complet, adresse e-mail, mot de passe (chiffré).</li>
+          <li><strong>Données d'utilisation :</strong> actions effectuées sur la plateforme, logs de connexion, adresse IP.</li>
+          <li><strong>Données techniques :</strong> type de navigateur, système d'exploitation, identifiant de session.</li>
+          <li><strong>Données de paiement :</strong> traitées exclusivement via nos partenaires certifiés PCI-DSS. Nous ne stockons pas vos numéros de carte.</li>
+        </ul>
+        <p>Nous ne collectons jamais de données sensibles (origine ethnique, opinions politiques, données de santé).</p>
+      </section>
+
+      <section id="utilisation">
+        <h2>Utilisation des données</h2>
+        <p>Vos données sont utilisées pour :</p>
+        <ul>
+          <li>Créer et gérer votre compte Akili.</li>
+          <li>Fournir, améliorer et sécuriser nos services.</li>
+          <li>Vous envoyer des notifications techniques et mises à jour importantes.</li>
+          <li>Vous proposer des fonctionnalités personnalisées (avec votre consentement).</li>
+          <li>Respecter nos obligations légales et réglementaires.</li>
+        </ul>
+        <p>Nous n'utilisons pas vos données à des fins publicitaires tierces sans votre consentement explicite.</p>
+      </section>
+
+      <section id="partage">
+        <h2>Partage des données</h2>
+        <p>Vos données ne sont jamais vendues. Nous pouvons les partager avec :</p>
+        <ul>
+          <li><strong>Sous-traitants techniques :</strong> hébergement cloud (serveurs sécurisés en UE), outils d'analyse anonymisés.</li>
+          <li><strong>Partenaires d'authentification :</strong> Google, GitHub uniquement avec votre accord lors de la connexion sociale.</li>
+          <li><strong>Autorités légales :</strong> uniquement sur réquisition judiciaire valide.</li>
+        </ul>
+        <p>Tout partenaire est lié par un accord de traitement des données conforme au RGPD.</p>
+      </section>
+
+      <section id="securite">
+        <h2>Sécurité</h2>
+        <p>Nous mettons en œuvre des mesures de sécurité robustes :</p>
+        <ul>
+          <li>Chiffrement TLS 1.3 pour toutes les communications.</li>
+          <li>Mots de passe hachés avec bcrypt (facteur de coût élevé).</li>
+          <li>Authentification à deux facteurs (2FA) disponible.</li>
+          <li>Audits de sécurité réguliers et tests de pénétration.</li>
+          <li>Journaux d'accès monitorés en temps réel.</li>
+        </ul>
+        <p>En cas de violation de données, vous serez notifié dans les 72 heures conformément à l'article 33 du RGPD.</p>
+      </section>
+
+      <section id="droits">
+        <h2>Vos droits</h2>
+        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <ul>
+          <li><strong>Accès :</strong> obtenir une copie de vos données personnelles.</li>
+          <li><strong>Rectification :</strong> corriger des informations inexactes.</li>
+          <li><strong>Effacement :</strong> demander la suppression de votre compte et données ("droit à l'oubli").</li>
+          <li><strong>Portabilité :</strong> recevoir vos données dans un format structuré (JSON/CSV).</li>
+          <li><strong>Opposition :</strong> vous opposer à certains traitements.</li>
+          <li><strong>Limitation :</strong> restreindre temporairement le traitement.</li>
+        </ul>
+        <p>Pour exercer ces droits, contactez-nous à l'adresse ci-dessous. Nous répondons sous 30 jours.</p>
+      </section>
+
+      <section id="cookies">
+        <h2>Cookies</h2>
+        <p>Nous utilisons des cookies strictement nécessaires au fonctionnement du service (session, sécurité CSRF). Aucun cookie publicitaire n'est déposé sans votre consentement préalable.</p>
+        <ul>
+          <li><strong>Cookies essentiels :</strong> maintien de la session, sécurité. Durée : session.</li>
+          <li><strong>Cookies analytiques :</strong> mesure d'audience anonymisée. Durée : 13 mois. Opt-out disponible.</li>
+        </ul>
+        <p>Vous pouvez gérer vos préférences de cookies à tout moment depuis les paramètres de votre compte.</p>
+      </section>
+
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>Pour toute question relative à vos données personnelles ou pour exercer vos droits :</p>
+        <div class="contact-card">
+          <p><strong style="color: var(--text); display:block; margin-bottom:8px;">Akili — DPO</strong></p>
+          <p><a href="mailto:privacy@akili.io">privacy@akili.io</a></p>
+          <p style="margin-top:6px;">Siège social : Cotonou, Bénin</p>
+          <p style="margin-top:6px;">Délai de réponse : sous 30 jours ouvrables.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 Akili. Tous droits réservés.</span>
+    <a href="cdu.html">Conditions d'Utilisation</a>
+    <a href="connexion.html">Se connecter</a>
+  </footer>
+
+</body>
+</html>

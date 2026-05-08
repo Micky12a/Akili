@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <title>Services — Akili Script Toolkit</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --teal:#2dd4bf; --teal-dark:#0f9488; --orange:#f97316; --yellow:#fde047;
+      --bg:#0a0c10; --bg2:#0d1018; --surface:#131720; --surface2:#1a1f2e;
+      --text:#e6eaf4; --muted:#636b7e; --border:#1e2438;
+    }
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(10,12,16,.82);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);}
+    .nav-brand{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:800;color:var(--text);text-decoration:none;}
+    .nav-brand span{color:var(--teal);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{font-size:13.5px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--text);}
+    .nav-right{display:flex;gap:10px;align-items:center;}
+    .btn-ghost{padding:7px 16px;font-size:13px;font-weight:600;color:var(--text);text-decoration:none;border:1px solid rgba(255,255,255,.12);border-radius:6px;transition:border-color .2s,color .2s;}
+    .btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+    .btn-nav-teal{padding:7px 16px;font-size:13px;font-weight:700;color:#0a0c10;background:var(--teal);text-decoration:none;border-radius:6px;transition:background .2s;white-space:nowrap;}
+    .btn-nav-teal:hover{background:var(--teal-dark);}
+
+    .hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;cursor:pointer;padding:8px;transition:border-color .2s;}
+    .hamburger:hover{border-color:var(--teal);}
+    .hamburger span{display:block;height:1.5px;width:100%;background:var(--text);border-radius:2px;transition:transform .3s,opacity .3s;}
+    .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+    .mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;z-index:299;background:rgba(10,12,16,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:20px 24px 28px;flex-direction:column;gap:4px;transform:translateY(-10px);opacity:0;transition:transform .25s ease,opacity .25s ease;pointer-events:none;}
+    .mobile-menu.open{display:flex;transform:translateY(0);opacity:1;pointer-events:auto;}
+    .mobile-menu a{font-size:15px;font-weight:500;color:var(--muted);text-decoration:none;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);transition:color .2s;}
+    .mobile-menu a:last-child{border-bottom:none;}
+    .mobile-menu a:hover,.mobile-menu a.active{color:var(--text);}
+    .mobile-menu .mob-login{margin-top:12px;padding:12px 0;font-weight:600;color:var(--teal);border-bottom:none;}
+
+    .page-hero{padding:130px 40px 80px;position:relative;overflow:hidden;background:var(--bg);border-bottom:1px solid var(--border);}
+    .page-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 100% 100% at 50% 0%,black 30%,transparent 100%);}
+    .page-hero::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse at top,rgba(45,212,191,.10) 0%,transparent 65%);pointer-events:none;}
+    .ph-inner{position:relative;z-index:1;max-width:680px;}
+    .slabel{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:block;}
+    .page-hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(34px,5vw,64px);font-weight:800;color:var(--text);letter-spacing:-.025em;line-height:1.08;margin-bottom:20px;}
+    .page-hero h1 em{font-style:normal;color:var(--teal);}
+    .page-hero p{font-size:16px;color:var(--muted);line-height:1.72;max-width:520px;margin-bottom:36px;}
+    .hero-chips{display:flex;gap:10px;flex-wrap:wrap;}
+    .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.2);color:var(--teal);font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.08em;padding:5px 14px;border-radius:20px;}
+
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+
+    .modules-section{padding:80px 40px 100px;background:var(--bg);}
+    .ms-header{margin-bottom:56px;}
+    .ms-header h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(22px,3vw,36px);font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:8px;}
+    .ms-header p{font-size:14.5px;color:var(--muted);}
+    .modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .mc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px 32px 40px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;}
+    .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+    .mc:hover{border-color:rgba(45,212,191,.35);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.4);}
+    .mc:hover::before{background:var(--teal);}
+    .mc-num{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+    .mc-icon{width:52px;height:52px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:22px;transition:background .3s,border-color .3s;}
+    .mc:hover .mc-icon{background:rgba(45,212,191,.14);border-color:rgba(45,212,191,.4);}
+    .mc-title{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:14px;}
+    .mc-desc{font-size:14px;color:var(--muted);line-height:1.72;margin-bottom:24px;}
+    .mc-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:gap .2s;}
+    .mc-link:hover{gap:11px;}
+
+    .features-section{padding:80px 40px;background:var(--bg2);position:relative;}
+    .features-section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+    .fs-header{text-align:center;margin-bottom:72px;}
+    .fs-header h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(24px,3.5vw,40px);font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:12px;}
+    .fs-header p{font-size:15px;color:var(--muted);}
+    .features-list{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:860px;margin:0 auto;}
+    .fl-item{background:var(--surface);padding:32px 36px;display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:start;transition:background .25s;}
+    .fl-item:hover{background:var(--surface2);}
+    .fl-icon{width:48px;height:48px;background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .fl-text h3{font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:7px;}
+    .fl-text p{font-size:13.5px;color:var(--muted);line-height:1.65;}
+
+    .cta-strip{padding:80px 40px;background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto;}
+    .cs-left h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:14px;line-height:1.12;}
+    .cs-left p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+    .cs-btns{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn-teal{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:var(--teal);color:#0a0c10;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:7px;text-decoration:none;cursor:pointer;transition:background .2s;}
+    .btn-teal:hover{background:var(--teal-dark);}
+    .btn-border{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:transparent;color:var(--text);font-size:14px;font-weight:600;border:1.5px solid var(--border);border-radius:7px;text-decoration:none;transition:border-color .2s,color .2s;}
+    .btn-border:hover{border-color:var(--teal);color:var(--teal);}
+    .cs-right{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden;}
+    .cs-right::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(45,212,191,.12) 0%,transparent 65%);}
+    .terminal{font-family:'Space Mono',monospace;font-size:13px;line-height:2;}
+    .tp{color:var(--teal);} .tc{color:var(--text);} .to{color:var(--muted);} .tok{color:#68d391;}
+
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:36px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+    .fb{font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:800;color:var(--text);}
+    .fb span{color:var(--teal);}
+    .flinks{display:flex;gap:28px;list-style:none;}
+    .flinks a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+    .flinks a:hover{color:var(--teal);}
+    .fc{font-size:12px;color:var(--muted);}
+
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+    @media(max-width:860px){
+      nav{padding:0 16px;}
+      .nav-links{display:none;}
+      .btn-ghost{display:none;}
+      .hamburger{display:flex;}
+      .page-hero,.modules-section,.features-section,.cta-strip{padding-left:20px;padding-right:20px;}
+      .modules-grid,.features-list,.cta-strip{grid-template-columns:1fr;}
+      .cta-strip{gap:40px;}
+      footer{flex-direction:column;text-align:center;}
+      .flinks{flex-wrap:wrap;justify-content:center;gap:16px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="fonctionnalites.html">Fonctionnalités</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="connexion.html" class="btn-ghost">Se connecter</a>
+    <a href="inscription.html" class="btn-nav-teal">Commencer</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="index.html">Accueil</a>
+  <a href="fonctionnalites.html">Fonctionnalités</a>
+  <a href="tarification.html">Tarification</a>
+  <a href="services.html" class="active">Services</a>
+  <a href="connexion.html" class="mob-login">Se connecter →</a>
+</nav>
+
+<section class="page-hero">
+  <div class="ph-inner">
+    <span class="slabel">Services · Intelligence au service de l'automatisation</span>
+    <h1>L'Intelligence au service de<br>l'<em>automatisation</em>.</h1>
+    <p>Une suite d'outils orchestrée pour les environnements critiques. Une vision moderne de l'ingénierie logicielle, inspirée par la résilience de la savane numérique.</p>
+    <div class="hero-chips">
+      <span class="chip">⚡ Déploiement CI/CD</span>
+      <span class="chip">🔐 Sécurité AES-256</span>
+      <span class="chip">☁ Cloud Hybride</span>
+      <span class="chip">📊 Monitoring IA</span>
+    </div>
+  </div>
+</section>
+
+<section class="modules-section">
+  <div class="ms-header reveal">
+    <h2>Six piliers d'excellence</h2>
+    <p>Chaque module est conçu pour résoudre un problème critique de votre infrastructure.</p>
+  </div>
+  <div class="modules-grid">
+    <div class="mc reveal"><div class="mc-num">MODULE 01</div><div class="mc-icon">🚀</div><div class="mc-title">Déploiement</div><p class="mc-desc">CI/CD automatisé avec rollback intelligent. Déployez vos micro-services en un clic sans interruption de service. Pipeline versionné et auditable.</p><a href="#" class="mc-link">Explorer →</a></div>
+    <div class="mc reveal"><div class="mc-num">MODULE 02</div><div class="mc-icon">📁</div><div class="mc-title">Gestion Fichiers</div><p class="mc-desc">Indexation sémantique et archivage prédictif. Organisez des pétaoctets de données avec une structure logique cohérente et performante.</p><a href="#" class="mc-link">Explorer →</a></div>
+    <div class="mc reveal"><div class="mc-num">MODULE 03</div><div class="mc-icon">💳</div><div class="mc-title">Facturation</div><p class="mc-desc">Automatisation des flux de revenus. Gestion multi-devises et rapports fiscaux générés par algorithmes avec conformité internationale.</p><a href="#" class="mc-link">Explorer →</a></div>
+    <div class="mc reveal"><div class="mc-num">MODULE 04</div><div class="mc-icon">📡</div><div class="mc-title">Monitoring</div><p class="mc-desc">Observabilité en temps réel. Tableaux de bord personnalisés avec alertes de santé basées sur le machine learning et des seuils adaptatifs.</p><a href="#" class="mc-link">Explorer →</a></div>
+    <div class="mc reveal"><div class="mc-num">MODULE 05</div><div class="mc-icon">🛡</div><div class="mc-title">Sécurité</div><p class="mc-desc">Chiffrement AES-256 et audits de sécurité continus. Protection contre les menaces Zéro-Day en périphérie avec détection comportementale.</p><a href="#" class="mc-link">Explorer →</a></div>
+    <div class="mc reveal"><div class="mc-num">MODULE 06</div><div class="mc-icon">☁</div><div class="mc-title">Cloud</div><p class="mc-desc">Orchestration hybride multi-cloud. Optimisez vos coûts d'infrastructure grâce à une répartition dynamique des ressources et autoscaling.</p><a href="#" class="mc-link">Explorer →</a></div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="fs-header reveal">
+    <h2>Tout ce dont vous avez besoin</h2>
+    <p>Des fonctionnalités pensées pour les équipes exigeantes.</p>
+  </div>
+  <div class="features-list">
+    <div class="fl-item reveal"><div class="fl-icon">⚡</div><div class="fl-text"><h3>Exécution ultra-rapide</h3><p>Latence P99 sous 12ms grâce à notre infrastructure edge distribuée sur 40+ régions mondiales.</p></div></div>
+    <div class="fl-item reveal"><div class="fl-icon">🔄</div><div class="fl-text"><h3>Synchronisation temps réel</h3><p>Vos données restent cohérentes sur toutes les instances grâce à notre moteur de synchronisation distribué.</p></div></div>
+    <div class="fl-item reveal"><div class="fl-icon">📊</div><div class="fl-text"><h3>Tableaux de bord intelligents</h3><p>Visualisations géométriques en temps réel avec alertes prédictives basées sur l'historique de vos métriques.</p></div></div>
+    <div class="fl-item reveal"><div class="fl-icon">🔌</div><div class="fl-text"><h3>Intégrations natives</h3><p>Connectez-vous à GitHub, Slack, Stripe, et 200+ outils sans une seule ligne de configuration manuelle.</p></div></div>
+    <div class="fl-item reveal"><div class="fl-icon">🔐</div><div class="fl-text"><h3>Sécurité de grade militaire</h3><p>Chiffrement bout-en-bout, 2FA obligatoire, audit logs complets et conformité SOC 2 Type II.</p></div></div>
+    <div class="fl-item reveal"><div class="fl-icon">🌍</div><div class="fl-text"><h3>Déploiement mondial</h3><p>Répliquez vos services sur n'importe quelle région en un clic. Failover automatique et redondance garantis.</p></div></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <div class="cs-left reveal">
+    <h2>Rejoignez les entreprises qui font confiance à Akili.</h2>
+    <p>Des milliers d'équipes utilisent Akili Script Toolkit pour propulser leur vision technologique avec une efficacité sans précédent.</p>
+    <div class="cs-btns">
+      <a href="inscription.html" class="btn-teal">Démarrer maintenant →</a>
+      <a href="tarification.html" class="btn-border">Documents techniques</a>
+    </div>
+  </div>
+  <div class="cs-right reveal">
+    <div class="terminal">
+      <div><span class="tp">$</span> <span class="tc">akili service:deploy --module=all</span></div>
+      <div><span class="to">Initialisation des modules...</span></div>
+      <div><span class="tok">✓</span> <span class="to">Déploiement · Module 01</span></div>
+      <div><span class="tok">✓</span> <span class="to">Sécurité  · AES-256 activé</span></div>
+      <div><span class="tok">✓</span> <span class="to">Monitoring · Alertes configurées</span></div>
+      <div><span class="tok">✓</span> <span class="to">Cloud     · 3 régions actives</span></div>
+      <br>
+      <div><span class="tok">✓</span> <span class="tc">6 modules opérationnels · 11ms</span></div>
+      <div><span class="tp">$</span> <span style="display:inline-block;width:2px;height:14px;background:var(--teal);vertical-align:middle;animation:blink 1s infinite"></span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fb">Akili<span>.</span></div>
+  <ul class="flinks">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="confidentialite.html">Confidentialité</a></li>
+    <li><a href="cdu.html">CGU</a></li>
+  </ul>
+  <div class="fc">© 2026 Akili. Tous droits réservés.</div>
+</footer>
+
+<script>
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open', !open);
+    hamburger.classList.toggle('open', !open);
+    hamburger.setAttribute('aria-expanded', String(!open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('visible'), i*90); io.unobserve(e.target); }
+    });
+  }, { threshold:.08 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

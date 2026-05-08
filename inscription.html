@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Playfair+Display:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <title>Inscription - Akili</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --teal: #2dd4bf;
+      --teal-dark: #0f9488;
+      --orange: #f97316;
+      --yellow: #fde047;
+      --bg: #0a0c10;
+      --bg2: #0d1018;
+      --surface: #131720;
+      --surface2: #181b22;
+      --text: #e6eaf4;
+      --muted: #636b7e;
+      --border: #1e2438;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,12,16,0.82); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-brand { font-family:'Playfair Display', Georgia, serif; font-size:20px; font-weight:800; color:var(--text); text-decoration:none; }
+    .nav-brand span { color:var(--teal); }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .nav-links a:hover { color:var(--text); }
+    .nav-right { display:flex; gap:10px; align-items:center; }
+    .btn-ghost { padding:7px 16px; font-size:13px; font-weight:600; color:var(--text); text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; transition:border-color .2s,color .2s; }
+    .btn-ghost:hover { border-color:var(--teal); color:var(--teal); }
+    .btn-nav-teal { padding:7px 16px; font-size:13px; font-weight:700; color:#0a0c10; background:var(--teal); text-decoration:none; border-radius:6px; transition:background .2s; white-space:nowrap; }
+    .btn-nav-teal:hover { background:var(--teal-dark); }
+
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 36px; height: 36px;
+      background: transparent; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px; cursor: pointer; padding: 8px; transition: border-color .2s;
+    }
+    .hamburger:hover { border-color: var(--teal); }
+    .hamburger span { display: block; height: 1.5px; width: 100%; background: var(--text); border-radius: 2px; transition: transform .3s, opacity .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; right: 0; z-index: 299;
+      background: rgba(10,12,16,0.97); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 24px 28px; flex-direction: column; gap: 4px;
+      transform: translateY(-10px); opacity: 0;
+      transition: transform .25s ease, opacity .25s ease; pointer-events: none;
+    }
+    .mobile-menu.open { display: flex; transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .mobile-menu a { font-size: 15px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color .2s; }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--text); }
+    .mobile-menu .mob-login { margin-top: 12px; padding: 12px 0; font-weight: 600; color: var(--teal); border-bottom: none; }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      padding-top: 60px;
+    }
+
+    .left-panel {
+      flex: 1;
+      padding: 60px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      top: 10%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(45,212,191,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(45,212,191,0.08);
+      color: var(--teal);
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(45,212,191,0.25);
+      margin-bottom: 28px;
+      width: fit-content;
+      position: relative; z-index: 1;
+    }
+
+    .left-panel h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      position: relative; z-index: 1;
+    }
+
+    .left-panel p.desc {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.68;
+      max-width: 380px;
+      margin-bottom: 48px;
+      position: relative; z-index: 1;
+    }
+
+    .stats {
+      display: flex;
+      gap: 48px;
+      position: relative; z-index: 1;
+    }
+
+    .stat-item {
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 4px; bottom: 4px;
+      width: 3px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .right-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+    }
+
+    .card {
+      background: var(--surface2);
+      width: 380px;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+      padding: 36px 36px 28px;
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 7px;
+    }
+
+    .input-wrap { position: relative; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 42px 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder { color: var(--muted); opacity: 0.5; }
+
+    input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.12);
+    }
+
+    .icon-right {
+      position: absolute; right: 13px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px; color: var(--muted);
+      cursor: pointer; user-select: none;
+    }
+
+    .icon-check { color: var(--teal); font-size: 18px; }
+    .icon-error { color: #f87171; font-size: 18px; }
+
+    .strength-row { display: flex; gap: 5px; margin-top: 7px; }
+    .bar { flex: 1; height: 4px; border-radius: 2px; background: var(--border); }
+    .bar.on { background: var(--teal); }
+
+    .hint { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px;
+      background: var(--teal); color: #0a0c10;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 0.04em; cursor: pointer;
+      margin-top: 8px; margin-bottom: 20px;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { background: var(--teal-dark); box-shadow: 0 0 24px rgba(45,212,191,0.25); }
+    .btn-primary:active { transform: scale(0.99); }
+
+    .login-link {
+      text-align: center; font-size: 13.5px; color: var(--muted); margin-bottom: 20px;
+    }
+    .login-link a { color: var(--teal); font-weight: 600; text-decoration: none; }
+    .login-link a:hover { text-decoration: underline; }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 16px; margin-top: 4px;
+      text-align: center; font-size: 11.5px;
+      color: var(--muted); line-height: 1.6; opacity: 0.7;
+    }
+    .card-footer a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--border); }
+
+    footer {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 36px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .fb { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 800; color: var(--text); }
+    .fb span { color: var(--teal); }
+    .fl { display: flex; gap: 28px; list-style: none; }
+    .fl a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .fl a:hover { color: var(--teal); }
+    .fc { font-size: 12px; color: var(--muted); }
+
+    @media (max-width: 860px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .btn-ghost { display: none; }
+      .hamburger { display: flex; }
+
+      main { flex-direction: column; }
+      .left-panel { padding: 40px 24px 32px; border-right: none; }
+      .right-panel { padding: 24px 20px 48px; border-left: none; border-top: 1px solid var(--border); }
+      .card { width: 100%; max-width: 420px; }
+      footer { flex-direction: column; text-align: center; }
+      .fl { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Akili<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="fonctionnalites.html">Fonctionnalités</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="services.html">Services</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="connexion.html" class="btn-ghost">Se connecter</a>
+    <a href="inscription.html" class="btn-nav-teal">Commencer</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="index.html">Accueil</a>
+  <a href="fonctionnalites.html">Fonctionnalités</a>
+  <a href="tarification.html">Tarification</a>
+  <a href="services.html">Services</a>
+  <a href="connexion.html" class="mob-login">Se connecter →</a>
+</nav>
+
+<main>
+  <div class="left-panel">
+    <div class="badge">Toolkit d'excellence</div>
+    <h2>Construisez le futur de l'ingénierie logicielle.</h2>
+    <p class="desc">Rejoignez une communauté de développeurs d'élite utilisant des outils conçus pour la précision, la rapidité et la résonance culturelle authentique.</p>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">50k+</div>
+        <div class="stat-label">Développeurs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">12ms</div>
+        <div class="stat-label">Latence P99</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">99.9%</div>
+        <div class="stat-label">Uptime garanti</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="card">
+      <div class="card-title">Inscription</div>
+      <p class="card-sub">Créer votre compte Akili en quelques secondes.</p>
+
+      <div class="field">
+        <label>Nom complet</label>
+        <div class="input-wrap">
+          <input type="text" id="fullname" placeholder="Landry QUENUM" oninput="checkName(this)">
+          <span class="icon-right" id="name-icon"></span>
+        </div>
+        <div class="hint" id="name-hint" style="opacity:0">Valide</div>
+      </div>
+
+      <div class="field">
+        <label>E-mail professionnel</label>
+        <div class="input-wrap">
+          <input type="email" id="email" placeholder="nom@exemple.com" oninput="checkEmail(this)">
+          <span class="icon-right" id="email-icon"></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <input type="password" id="password" placeholder="••••••••••" oninput="checkStrength(this)">
+          <span class="icon-right" id="toggle-pw" onclick="togglePw('password','toggle-pw')" style="cursor:pointer">👁</span>
+        </div>
+        <div class="strength-row">
+          <div class="bar" id="b1"></div>
+          <div class="bar" id="b2"></div>
+          <div class="bar" id="b3"></div>
+          <div class="bar" id="b4"></div>
+        </div>
+        <div class="hint" id="pw-hint">Au moins 12 caractères.</div>
+      </div>
+
+      <div class="field">
+        <label>Confirmer le mot de passe</label>
+        <div class="input-wrap">
+          <input type="password" id="confirm" placeholder="••••••••••" oninput="checkConfirm(this)">
+          <span class="icon-right" id="confirm-icon"></span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="handleSubmit()">CRÉER UN COMPTE →</button>
+
+      <div class="login-link">
+        Déjà un compte ? <a href="connexion.html">Se connecter</a>
+      </div>
+
+      <div class="card-footer">
+        En créant un compte, vous acceptez nos <a href="cdu.html">Conditions d'Utilisation</a> et notre <a href="confidentialite.html">Politique de Confidentialité</a>.
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="fb">Akili<span>.</span></div>
+  <ul class="fl">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="tarification.html">Tarification</a></li>
+    <li><a href="confidentialite.html">Confidentialité</a></li>
+    <li><a href="cdu.html">CGU</a></li>
+  </ul>
+  <div class="fc">© 2026 Akili. Tous droits réservés.</div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open', !open);
+    hamburger.classList.toggle('open', !open);
+    hamburger.setAttribute('aria-expanded', String(!open));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }));
+
+  function togglePw(id) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+  function checkName(el) {
+    const icon = document.getElementById('name-icon');
+    const hint = document.getElementById('name-hint');
+    hint.style.opacity = '1';
+    if (el.value.trim().length >= 3) {
+      icon.textContent = '✔'; icon.className = 'icon-right icon-check';
+      hint.textContent = 'Valide'; hint.style.color = '#2dd4bf';
+    } else {
+      icon.textContent = ''; hint.textContent = 'Minimum 3 caractères.'; hint.style.color = '#636b7e';
+    }
+  }
+  function checkEmail(el) {
+    const icon = document.getElementById('email-icon');
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+    if (el.value.length > 0) {
+      icon.textContent = valid ? '✔' : '✖';
+      icon.className = 'icon-right ' + (valid ? 'icon-check' : 'icon-error');
+    } else { icon.textContent = ''; }
+  }
+  function checkStrength(el) {
+    const v = el.value; let score = 0;
+    if (v.length >= 8) score++;
+    if (v.length >= 12) score++;
+    if (/[A-Z]/.test(v) && /[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    for (let i = 1; i <= 4; i++) document.getElementById('b'+i).className = 'bar' + (i <= score ? ' on' : '');
+    const hints = ['', 'Trop court', 'Moyen', 'Bon', 'Fort'];
+    const hint = document.getElementById('pw-hint');
+    hint.textContent = score === 0 ? 'Au moins 12 caractères.' : hints[score];
+  }
+  function checkConfirm(el) {
+    const pw = document.getElementById('password').value;
+    const icon = document.getElementById('confirm-icon');
+    if (el.value.length > 0) {
+      const match = el.value === pw;
+      icon.textContent = match ? '✔' : '✖';
+      icon.className = 'icon-right ' + (match ? 'icon-check' : 'icon-error');
+    } else { icon.textContent = ''; }
+  }
+  function handleSubmit() { alert('Compte créé avec succès !'); }
+</script>
+</body>
+</html>
