@@ -8,9 +8,8 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/fr/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 [![GitHub Pages](https://img.shields.io/badge/Déployé%20sur-GitHub%20Pages-222222?style=flat-square&logo=github)](https://micky12a.github.io/Akili/)
-[![Hackathon](https://img.shields.io/badge/Hackathon-EIG%202025-2dd4bf?style=flat-square)](https://github.com/micky12a/Akili)
+[![Hackathon](https://img.shields.io/badge/Hackathon-EIG%202026-2dd4bf?style=flat-square)](https://github.com/micky12a/Akili)
 [![Statut](https://img.shields.io/badge/Statut-En%20production-brightgreen?style=flat-square)](https://micky12a.github.io/Akili/)
-[![Licence](https://img.shields.io/badge/Licence-MIT-orange?style=flat-square)](LICENSE)
 
 <br/>
 
@@ -165,7 +164,7 @@ git push origin main
 
 ---
 
-## 👥 Équipe
+## Équipe
 
 Projet développé par **Heritage Tech** dans le cadre du Hackathon EIG 2025.
 
