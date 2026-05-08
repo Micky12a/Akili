@@ -15,9 +15,9 @@
 <br/>
 
 > *"Akili" signifie **Intelligence** ou **Sagesse** en Swahili.*  
-> Un toolkit d'automatisation qui libère les utilisateurs des tâches répétitives — sans écrire une seule ligne de code.
+> Un toolkit d'automatisation qui libère les utilisateurs des tâches répétitives sans écrire une seule ligne de code.
 
-**[🌐 Voir le site en ligne](https://micky12a.github.io/Akili/)**  &nbsp;·&nbsp;  **[📄 Documentation](https://micky12a.github.io/Akili/fonctionnalites.html)**  &nbsp;·&nbsp;  **[💰 Tarification](https://micky12a.github.io/Akili/tarification.html)**
+**[🌐 Voir le site en ligne](https://micky12a.github.io/Akili/)**  &nbsp;·&nbsp;  **[Documentation](https://micky12a.github.io/Akili/fonctionnalites.html)**  &nbsp;·&nbsp;  **[Tarification](https://micky12a.github.io/Akili/tarification.html)**
 
 </div>
 
@@ -32,44 +32,43 @@
 - [Design System](#-design-system)
 - [Installation & Développement](#-installation--développement)
 - [Équipe](#-équipe)
-- [Licence](#-licence)
 
 ---
 
-## 🧠 À propos
+## À propos
 
 **Akili Script Toolkit** est une application web SaaS conçue pour automatiser les tâches répétitives du quotidien numérique : déploiement, gestion de fichiers, facturation, nettoyage système, configuration d'environnement et sécurité.
 
 Sa philosophie : rendre l'automatisation **accessible à tous**, qu'on soit développeur confirmé ou non-technicien. Le toolkit met à disposition plus de **27 scripts prêts à l'emploi**, organisés en 6 modules thématiques, exploitables depuis une interface web intuitive ou via une ligne de commande.
 
-Le projet a été imaginé et développé dans le cadre du **Hackathon EIG 2025** par l'équipe **Heritage Tech**, avec une identité visuelle ancrée dans l'Afrique contemporaine.
+Le projet a été et développé dans le cadre du **2ème Hackathon EIG 2026** par l'**équipe 1**, avec une identité visuelle ancrée dans l'Afrique contemporaine.
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 ### 6 modules, 27+ scripts
 
 | Module | Description | Scripts |
 |---|---|---|
-| 🚀 **Déploiement** | CI/CD automatisé, rollback intelligent, pipeline auditable | 5+ |
-| 📁 **Gestion Fichiers** | Indexation sémantique, archivage prédictif, versioning, CDN | 5+ |
-| 💳 **Facturation** | Multi-devises, rapports fiscaux auto, abonnements récurrents | 4+ |
-| 📡 **Monitoring** | Métriques temps réel, alertes IA, tracing distribué | 5+ |
-| 🛡 **Sécurité** | AES-256, détection comportementale, audit logs immuables | 4+ |
-| ☁ **Cloud** | Multi-cloud, autoscaling prédictif, failover automatique | 4+ |
+| **Déploiement** | CI/CD automatisé, rollback intelligent, pipeline auditable | 5+ |
+| **Gestion Fichiers** | Indexation sémantique, archivage prédictif, versioning, CDN | 5+ |
+| **Facturation** | Multi-devises, rapports fiscaux auto, abonnements récurrents | 4+ |
+| **Monitoring** | Métriques temps réel, alertes IA, tracing distribué | 5+ |
+| **Sécurité** | AES-256, détection comportementale, audit logs immuables | 4+ |
+| **Cloud** | Multi-cloud, autoscaling prédictif, failover automatique | 4+ |
 
 ### Points forts techniques
 
-- ⚡ **Latence P99 de 12ms** grâce à une infrastructure edge distribuée
-- 🌍 **40+ régions** de déploiement mondiales (dont Lagos, Nairobi, Abidjan, Johannesburg)
-- 🔒 **Uptime garanti à 99.9%** (99.95% sur plan Entreprise)
-- ♿ **Conformité WCAG AA** pour une interface inclusive
-- 📱 **Responsive** de 320px à 1440px
+- **Latence P99 de 12ms** grâce à une infrastructure edge distribuée
+- **40+ régions** de déploiement mondiales (dont Lagos, Nairobi, Abidjan, Johannesburg)
+- **Uptime garanti à 99.9%** (99.95% sur plan Entreprise)
+- **Conformité WCAG AA** pour une interface inclusive
+- **Responsive** de 320px à 1440px
 
 ---
 
-## 🖥 Aperçu du site
+## Aperçu du site
 
 Le site comprend les pages suivantes, toutes accessibles en ligne :
 
@@ -84,7 +83,7 @@ Le site comprend les pages suivantes, toutes accessibles en ligne :
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 /Akili
@@ -98,16 +97,14 @@ Le site comprend les pages suivantes, toutes accessibles en ligne :
   ├── reset-password.html     # Réinitialisation du mot de passe
   ├── cdu.html                # Conditions Générales d'Utilisation
   ├── confidentialite.html    # Politique de confidentialité
-  ├── /css                    # Design System (variables, grilles, styles)
-  ├── /js                     # Logique d'interface (DOM, animations, switch)
-  └── /assets                 # Ressources visuelles (logos, icônes SVG)
+  └── README.md
 ```
 
 ---
 
-## 🎨 Design System
+## Design System
 
-L'identité visuelle d'Akili est **Afro-Minimaliste et Moderne**, s'inspirant du minimalisme SaaS (Vercel, Coolify) mêlé à des motifs géométriques contemporains d'Afrique de l'Ouest.
+L'identité visuelle d'Akili est **Afro-Minimaliste et Moderne**, s'inspirant du minimalisme SaaS (Github, Coolify) mêlé à des motifs géométriques contemporains d'Afrique de l'Ouest.
 
 ### Palette de couleurs
 
@@ -138,23 +135,19 @@ L'identité visuelle d'Akili est **Afro-Minimaliste et Moderne**, s'inspirant du
 
 ---
 
-## 🚀 Installation & Développement
+## Installation & Développement
 
-Le projet est une application **100% statique** — aucune dépendance backend, aucun build tool requis.
+Le projet est une application **100% statique**, aucune dépendance backend, aucun build tool requis.
 
 ### Lancer en local
 
 ```bash
-# Cloner le dépôt
 git clone https://github.com/micky12a/Akili.git
 cd Akili
 
-# Ouvrir directement dans le navigateur
 open index.html
 
-# Ou lancer un serveur local (recommandé)
 npx serve .
-# ou
 python3 -m http.server 8080
 ```
 
@@ -178,7 +171,7 @@ Projet développé par **Heritage Tech** dans le cadre du Hackathon EIG 2025.
 
 | Membre | Rôle |
 |---|---|
-| **Mick-Aurel Zola** | Lead & Architecture |
+| **Mick-Aurel ZOLA** | Lead & Architecture |
 | **Wilfried TOGBE** | Développeur |
 | **Ezechiel DJIKPESSE** | Développeur |
 | **Anol DOSSOU** | Développeur |
@@ -186,16 +179,10 @@ Projet développé par **Heritage Tech** dans le cadre du Hackathon EIG 2025.
 
 ---
 
-## 📄 Licence
-
-Ce projet est distribué sous licence **MIT**.  
-Voir le fichier [`LICENSE`](LICENSE) pour plus de détails.
-
----
 
 <div align="center">
 
-Fait avec ❤ par **Heritage Tech** · Hackathon EIG 2025
+Fait par **L'équipe 1** · 2ème Hackathon EIG 2026
 
 [⬆ Retour en haut](#akili)
 
